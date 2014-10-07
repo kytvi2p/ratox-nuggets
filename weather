@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Simple weather oracle script by myroslav
+
+tail -n0 -f text_out | while read line; do
+	address=${line:17:${#line}}     # strip off date time
+	curl -s --get --data-urlencode "query=$address" \
+		http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml | \
+		perl -ne '/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"'
+done > text_in
