@@ -1,0 +1,4 @@
+#!/bin/sh
+# Echo script by myroslav
+
+tail -n0 -f text_out > text_in
