@@ -1,4 +1,4 @@
 #!/bin/sh
-# Echo script by myroslav
+# Echo script
 
 tail -n0 -f text_out > text_in

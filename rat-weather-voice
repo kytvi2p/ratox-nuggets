@@ -1,10 +1,11 @@
 #!/bin/sh
-# Weather oracle script
+# Voice based weather oracle script
 
 tail -n0 -f text_out | while read line; do
 	address=${line:17:${#line}}     # strip off date time
+	echo "Predicting weather at $address. Wait a moment and pick up the call!.." > text_in
 	curl -s --get --data-urlencode "query=$address" \
 		http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml | \
 		perl -ne '/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"' | \
-		perl -MHTML::Entities -pe 'decode_entities($_);'
-done > text_in
+	text2wave | sox -t wav - -r 48000 -c 1 -e signed -b 16 -L -t wav - > call_in
+done

@@ -1,5 +1,5 @@
 #!/bin/sh
-# A simple remote microphone script by myroslav
+# Remote microphone script
 
 while true; do
 	while grep -q 0 call_pending; do
