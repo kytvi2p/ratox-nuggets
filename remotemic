@@ -1,0 +1,10 @@
+#!/bin/sh
+# A simple remote microphone ratox script by myroslav
+
+while true; do
+	while grep -q 0 call_pending; do
+		inotifywait -t 60 -e modify call_pending;
+	done;
+	(cat call_out > /dev/null &)
+	arecord -r 48000 -c 1 -f S16_LE >>call_in;
+done
