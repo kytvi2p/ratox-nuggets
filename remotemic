@@ -1,5 +1,5 @@
 #!/bin/sh
-# A simple remote microphone ratox script by myroslav
+# A simple remote microphone script by myroslav
 
 while true; do
 	while grep -q 0 call_pending; do
