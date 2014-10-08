@@ -25,8 +25,14 @@ print_output() {
     for ID in $IDS; do
         NAME=$(cat $ID/name | tr -d '\n')
         STATUS=$(cat $ID/status | cut -c-30 |tr -d '\n')
-        ONLINE=$(online $(cat $ID/online))
-        printf "%-12s\t%-10s\t%-30s\t\t%-30s\n" $(echo $ID | cut -c-12) "$ONLINE" "$NAME" "$STATUS"
+        STATE=$(cat $ID/state | sed 's/.*/\u&/')
+        ONLINE=$(cat $ID/online)
+        if [ $STATE != 'None' ] && [ "$ONLINE" -ne 0 ]; then
+            ONLINE=$STATE
+        else
+            ONLINE=$(online $ONLINE)
+        fi
+        printf "%-12s\t%-8s\t%-30s\t\t%-30s\n" $(echo $ID | cut -c-12) "$ONLINE" "$NAME" "$STATUS"
     done
 }
 
