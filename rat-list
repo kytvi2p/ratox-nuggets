@@ -1,0 +1,9 @@
+#!/bin/sh
+# List friends
+
+IDS=$(ls |grep '[A-Z0-9]\{64\}')
+for ID in $IDS; do
+	NAME=$(cat $ID/name)
+	STATUS=$(cat $ID/status)
+	printf "%s\t%s\t\t%s\n" $(echo $ID | cut -c-12) "$NAME" "$STATUS"
+done
