@@ -32,7 +32,7 @@ print_output() {
         else
             ONLINE=$(online $ONLINE)
         fi
-        printf "%-12s\t%-8s\t%-30s\t\t%-30s\n" $(echo $ID | cut -c-12) "$ONLINE" "$NAME" "$STATUS"
+        printf "%-12s\t%-8s\t%-30s\t%-20s\n" $(echo $ID | cut -c-12) "$ONLINE" "$NAME" "$STATUS"
     done
 }
 
