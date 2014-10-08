@@ -1,9 +1,35 @@
 #!/bin/sh
+set -e
 # List friends
 
-IDS=$(ls |grep '[A-Z0-9]\{64\}')
-for ID in $IDS; do
-	NAME=$(cat $ID/name)
-	STATUS=$(cat $ID/status)
-	printf "%s\t%s\t\t%s\n" $(echo $ID | cut -c-12) "$NAME" "$STATUS"
-done
+online() {
+    if [ $1 -eq 1 ]; then
+        echo "Online"
+    else
+        echo "Offline"
+    fi
+}
+
+# Try to determine whether this is run from within
+# a ratox directory and complain if not.
+check_if_dir(){
+    # "grouping hack" to prevent output to stdout on FreeBSD
+    if ! { lsof id |grep -q '^ratox';} > /dev/null 2>&1 || [ ! -r id ]; then
+        echo "ERROR: Is this a ratox directory?" >&2
+        exit 1
+    fi
+}
+
+print_output() {
+    IDS=$(ls |grep '[A-Z0-9]\{64\}')
+    for ID in $IDS; do
+        NAME=$(cat $ID/name | tr -d '\n')
+        STATUS=$(cat $ID/status | cut -c-30 |tr -d '\n')
+        ONLINE=$(online $(cat $ID/online))
+        printf "%-12s\t%-10s\t%-30s\t\t%-30s\n" $(echo $ID | cut -c-12) "$ONLINE" "$NAME" "$STATUS"
+    done
+}
+
+
+check_if_dir
+print_output
