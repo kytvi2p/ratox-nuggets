@@ -1,10 +1,16 @@
 #!/bin/sh
 # Remote microphone script
+# Usage:
+#    rat-remotemic
+#        if no call is pending it'll initiate the call, if call is pending, i'tt be answered
+#        It should be called within friend dir, where call_in amd call_out pipes reside
 
-while true; do
-	while grep -q 0 call_pending; do
-		inotifywait -t 60 -e modify call_pending;
-	done;
-	(cat call_out > /dev/null &)
-	arecord -r 48000 -c 1 -f S16_LE >>call_in;
-done
+LIBRARY_LOCATION=`dirname $BASH_SOURCE`
+. $LIBRARY_LOCATION/functions
+
+function remotemic() {
+    TRASHER=$(stdin_trasher)
+    arecord -r 48000 -c 1 -f S16_LE -
+}
+
+test "X$(basename -- "$0")" = "Xrat-remotemic" && remotemic < call_out > call_in
