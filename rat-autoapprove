@@ -1,0 +1,19 @@
+#!/bin/sh
+# raTox Automatic Friend Request Approval
+#
+
+LIBRARY_LOCATION=`dirname $0`
+. $LIBRARY_LOCATION/functions
+
+[ ! -f .ratox.data ] && {
+    log "Should be run in root of ratox profile"
+    exit 1
+}
+
+while true; do
+	find request/out/ -type p | while read request; do
+		echo 1 > $request
+		log "Approved $request"
+	done
+	sleep 1
+done
