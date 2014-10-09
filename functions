@@ -1,0 +1,24 @@
+SCRIPT_NAME=`basename $0`
+
+if hash inotifywait 2>/dev/null; then
+        WAIT_FOR_CHANGE="inotifywait -t 60 -e modify"
+else
+        sleep 1
+fi
+
+function log() {
+        logger -t $SCRIPT_NAME -s "$*"
+}
+
+function monitor_pending() {
+        #allowed parameter "call", "file"
+        WHAT=$1
+	while grep -q 0 ${WHAT}_pending; do
+		$WAIT_FOR_CHANGE ${WHAT}_pending > /dev/null 2>&1
+	done
+}
+
+function stdin_trasher () {
+	{ cat > /dev/null <&3 3<&- & } 3<&0
+	echo $!
+}
