@@ -1,0 +1,15 @@
+#!/bin/sh
+test x"$1" = x"" && exit 1
+
+idstr="$1"
+textout="${idstr}/text_out"
+textin="${idstr}/text_in"
+history="${idstr}/history"
+namefile="name/out"
+
+touch "${history}"
+sob | tee -a "${history}" "${textin}" | while read -r msg; do
+	name=$(cat "${namefile}")
+	test x"$name" = x"" && name="Anonymous"
+	printf '%s : %s < %s\n' "`date +'%Y-%m-%d %H:%M'`" "${name}" "${msg}" >> "${textout}"
+done
