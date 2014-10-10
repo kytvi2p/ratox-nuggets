@@ -20,7 +20,7 @@ set_state() {
 # a ratox directory and complain if not.
 check_if_dir(){
     # "grouping hack" to prevent output to stdout on FreeBSD
-    if ! { lsof id |grep -q '^ratox';} > /dev/null 2>&1 || [ ! -r id ]; then
+    if ! { fstat id |grep -q 'ratox';} > /dev/null 2>&1 || [ ! -r id ]; then
         echo "ERROR: Is this a ratox directory?" >&2
         exit 1
     fi
