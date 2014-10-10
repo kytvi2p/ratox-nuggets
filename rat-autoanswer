@@ -3,7 +3,7 @@
 # Usage:
 #    rat-autoanswer <script>
 #        Wait until incomin call and spawn <script> to handle it
-#        script will have voice data piped into stdin and is expected 
+#        script will have voice data piped into stdin and is expected
 #        to produce response' voice data into stdout
 
 LIBRARY_LOCATION=`dirname $0`
@@ -13,10 +13,10 @@ export PATH=$LIBRARY_LOCATION:$PATH
 while true; do
         log "Monitoring for new call"
         monitor_pending call
-        
+
         log "Call started"
         $*
-        
+
         log "Call finished"
 	sleep 1
 done
